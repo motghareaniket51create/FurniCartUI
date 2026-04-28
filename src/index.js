@@ -1,13 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { ReactKeycloakProvider } from '@react-keycloak/web';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import keycloak from './keycloak';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
   <React.StrictMode>
-    <App />
+    <ReactKeycloakProvider
+      authClient={keycloak}
+      initOptions={{
+        onLoad: 'login-required',  // Auto-redirect to Keycloak if not logged in
+        checkLoginIframe: false
+      }}
+    >
+      <App />
+    </ReactKeycloakProvider>
   </React.StrictMode>
 );
 
