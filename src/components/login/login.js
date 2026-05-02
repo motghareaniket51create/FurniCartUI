@@ -1,36 +1,20 @@
 import { useKeycloak } from '@react-keycloak/web';
 import { LoginWrapper, FormContainer, Button } from './login.styled';
+import { Navigate } from 'react-router-dom';
 
 const Login = () => {
   const { keycloak, initialized } = useKeycloak();
 
-  if (!initialized) {
-    return (
-      <LoginWrapper>
-        <FormContainer>
-          <h2>Loading...</h2>
-        </FormContainer>
-      </LoginWrapper>
-    );
-  }
-
-  if (!keycloak.authenticated) {
-    return (
-      <LoginWrapper>
-        <FormContainer>
-          <h2>Keycloak Authentication</h2>
-          <p>You will be redirected to login shortly...</p>
-        </FormContainer>
-      </LoginWrapper>
-    );
+  if (keycloak.authenticated) {
+    return <Navigate to="/Home" />;
   }
 
   return (
     <LoginWrapper>
       <FormContainer>
-        <h2>Welcome, {keycloak.tokenParsed?.preferred_username}</h2>
-        <p>You are successfully authenticated!</p>
-        <Button onClick={() => keycloak.logout()}>Logout</Button>
+        <h2>Keycloak Authentication</h2>
+        <p>Click login to authenticate</p>
+        <Button onClick={() => keycloak.login()}>Login</Button>
       </FormContainer>
     </LoginWrapper>
   );

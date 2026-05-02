@@ -1,25 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { ReactKeycloakProvider } from '@react-keycloak/web';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import keycloak from './keycloak';
+import { ReactKeycloakProvider } from '@react-keycloak/web';
+import { BrowserRouter } from 'react-router-dom';
+import keycloak from './components/keycloak/keycloak'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const initOptions = { onLoad: 'check-sso' };
 
 root.render(
-  <React.StrictMode>
-    <ReactKeycloakProvider
-      authClient={keycloak}
-      initOptions={{
-        onLoad: 'login-required',  // Auto-redirect to Keycloak if not logged in
-        checkLoginIframe: false
-      }}
-    >
-      <App />
-    </ReactKeycloakProvider>
-  </React.StrictMode>
+  <ReactKeycloakProvider authClient={keycloak} initOptions={initOptions}>
+    <BrowserRouter>
+    <App keycloak = {keycloak}/>
+    </BrowserRouter>
+  </ReactKeycloakProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
